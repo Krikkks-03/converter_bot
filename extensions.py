@@ -2,7 +2,7 @@ import requests
 import json
 from config import keys
 
-class ConvertionException(Exception):
+class APIException(Exception):
     pass
 
 
@@ -10,25 +10,25 @@ class CryptoConverter:
     @staticmethod
     def convert(quote: str, base: str, amount: str):
         if quote == base:
-            raise ConvertionException(f'Невозможно перевести одинаковые валюты {base}')
+            raise APIException(f'Невозможно перевести одинаковые валюты {base}')
 
         try:
             quote_ticker = keys[quote]
         except KeyError:
-            raise ConvertionException(f'Не удалось обработать валюту {quote}')
+            raise APIException(f'Не удалось обработать валюту {quote}')
 
         try:
             base_ticker = keys[base]
         except KeyError:
-            raise ConvertionException(f'Не удалось обработать валюту {base}')
+            raise APIException(f'Не удалось обработать валюту {base}')
 
 
         try:
             amount_float = float(amount.replace(',', '.'))
         except ValueError:
-            raise ConversionException(f'Не удалось обработать количество {amount}')
+            raise APIException(f'Не удалось обработать количество {amount}')
         if amount_float <= 0:
-            raise ConversionException('Количество должно быть положительным числом')
+            raise APIException('Количество должно быть положительным числом')
 
 
         try:
