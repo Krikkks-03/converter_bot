@@ -35,12 +35,12 @@ class CryptoConverter:
             r = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={quote_ticker}&tsyms={base_ticker}')
             data = r.json()
         except requests.exceptions.RequestException as e:
-            raise ConversionException(f'Ошибка подключения к API: {e}')
+            raise APIException(f'Ошибка подключения к API: {e}')
         except json.JSONDecodeError:
-            raise ConversionException('Ошибка обработки ответа от API')
+            raise APIException('Ошибка обработки ответа от API')
 
         if base_ticker not in data:
-            raise ConversionException(f'Курс для {base} не получен')
+            raise APIException(f'Курс для {base} не получен')
 
         total_base = amount_float * data[base_ticker]
         return total_base
